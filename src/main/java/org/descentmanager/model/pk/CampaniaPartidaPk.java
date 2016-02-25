@@ -49,4 +49,8 @@ public class CampaniaPartidaPk implements Serializable {
 		this.partidaId = partidaId;
 	}
 
+	@Override
+	public String toString() {
+		return campaniaId.toString() + "-" + partidaId.toString();
+	}
 }

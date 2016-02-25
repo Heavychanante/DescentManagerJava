@@ -49,4 +49,8 @@ public class JugadorHabilidadPk implements Serializable {
 		this.habilidadId = habilidadId;
 	}
 
+	@Override
+	public String toString() {
+		return jugadorId.toString() + "-" + habilidadId.toString();
+	}
 }

@@ -49,4 +49,8 @@ public class JugadorObjetoPk implements Serializable {
 		this.objetoId = objetoId;
 	}
 
+	@Override
+	public String toString() {
+		return jugadorId.toString() + "-" + objetoId.toString();
+	}
 }

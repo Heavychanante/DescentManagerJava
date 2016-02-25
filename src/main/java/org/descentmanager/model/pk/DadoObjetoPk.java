@@ -49,4 +49,8 @@ public class DadoObjetoPk implements Serializable {
 		this.objetoId = objetoId;
 	}
 
+	@Override
+	public String toString() {
+		return dadoId.toString() + "-" + objetoId.toString();
+	}
 }

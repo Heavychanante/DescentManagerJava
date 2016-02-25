@@ -49,4 +49,8 @@ public class DadoHabilidadPk implements Serializable {
 		this.habilidadId = habilidadId;
 	}
 
+	@Override
+	public String toString() {
+		return dadoId.toString() + "-" + habilidadId.toString();
+	}
 }
