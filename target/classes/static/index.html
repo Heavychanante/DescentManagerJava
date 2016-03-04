@@ -1,36 +1,112 @@
 <!doctype html>
 <html>
 <head>
-	<meta charset="utf-8"/>
-	<meta http-equiv="x-ua-compatible" content="ie=edge"/>
-	<title>Descent Manager</title>
-	<meta name="description" content=""/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<title>Descent Manager</title>
+<base href="/" />
+<meta name="description" content="" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-	<link href="css/angular-bootstrap.css" rel="stylesheet">
-	<link href="css/app.css" rel="stylesheet"/>
-	<link href="css/item/item.css" rel="stylesheet"/>
-	<link href="css/login/login.css" rel="stylesheet"/>
+<!-- bower:css -->
+<link rel="stylesheet"
+	href="bower_components/angular-ui-grid/ui-grid.css" />
+<link rel="stylesheet"
+	href="bower_components/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet"
+	href="bower_components/angular-dialog-service/dist/dialogs.min.css" />
+<link rel="stylesheet" href="bower_components/ngEmbed/src/ng-embed.css" />
+<!-- endbower -->
+
+
+<link rel="stylesheet" href="js/app.css">
+<link rel="stylesheet" href="js/login/login.css">
+<link rel="stylesheet" href="js/main/games/games.css">
+<link rel="stylesheet" href="js/main/main.css">
+<link rel="stylesheet"
+	href="js/main/newGame/modal/addPlayerModal/addPlayerModal.css">
+<link rel="stylesheet" href="js/main/newGame/newGame.css">
+<link rel="stylesheet" href="js/main/round/adventures/adventures.css">
+<link rel="stylesheet"
+	href="js/main/round/players/modal/addItemModal/addItemModal.css">
+<link rel="stylesheet"
+	href="js/main/round/players/modal/addSkillModal/addSkillModal.css">
+<link rel="stylesheet" href="js/main/round/players/players.css">
+<link rel="stylesheet" href="js/main/round/round.css">
+<link rel="stylesheet" href="js/register/register.css">
+<link rel="stylesheet" href="components/footer/footer.css">
+<link rel="stylesheet" href="components/modal/modal.css">
+
 </head>
 <body ng-app="descentManagerApp">
-	<ul>
-        <li>
-        	<a ui-sref="items">Objetos</a>
-        </li>
-        <li>
-        	<a ui-sref="skills">Habilidades</a>
-        </li>
-    </ul>
-	<!-- Add your site or application content here -->
-	<div ui-view>Loading ...</div>
-	
-	<script src="js/angular-bootstrap.js" type="text/javascript"></script>
-	<script src="js/app.js" type="text/javascript"></script>
-	<script src="js/login/login.js" type="text/javascript"></script>
-	<script src="js/login/login.controller.js" type="text/javascript"></script>
-	<script src="js/item/items.js" type="text/javascript"></script>
-	<script src="js/item/items.controller.js" type="text/javascript"></script>
-	<script src="js/skill/skills.js" type="text/javascript"></script>
-	<script src="js/skill/skills.controller.js" type="text/javascript"></script>
+
+	<navbar ng-show=""></navbar>
+
+	<div class="loading" ng-show="showLoader"></div>
+	<div ui-view=""></div>
+
+	<footer></footer>
+
+	<!-- bower:js -->
+	<script src="bower_components/jquery/dist/jquery.js"></script>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-animate/angular-animate.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+	<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+	<script src="bower_components/angular-resource/angular-resource.js"></script>
+	<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+	<script
+		src="bower_components/angular-spinners/dist/angular-spinners.min.js"></script>
+	<script src="bower_components/angular-ui-grid/ui-grid.js"></script>
+	<script
+		src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="bower_components/lodash/dist/lodash.compat.js"></script>
+	<script src="bower_components/angular-translate/angular-translate.js"></script>
+	<script
+		src="bower_components/angular-dialog-service/dist/dialogs.min.js"></script>
+	<script
+		src="bower_components/angular-dialog-service/dist/dialogs-default-translations.min.js"></script>
+	<script src="bower_components/ngEmbed/src/ng-embed.js"></script>
+	<!-- endbower -->
+
+	<script src="js/app.js"></script>
+	<script src="js/Adventure/Adventure.service.js"></script>
+	<script src="js/Alert/Alert.service.js"></script>
+	<script src="js/Character/Character.service.js"></script>
+	<script src="js/Class/Class.service.js"></script>
+	<script src="js/Game/Game.service.js"></script>
+	<script src="js/Item/Item.service.js"></script>
+	<script src="js/Player/Player.service.js"></script>
+	<script src="js/Skill/Skill.service.js"></script>
+	<script src="js/filters/getCantidad/getCantidad.filter.js"></script>
+	<script src="js/filters/numberToBoolean/numberToBoolean.filter.js"></script>
+	<script src="js/filters/positiveNumber/positiveNumber.filter.js"></script>
+	<script src="js/login/login.controller.js"></script>
+	<script src="js/login/login.js"></script>
+	<script src="js/main/games/games.controller.js"></script>
+	<script src="js/main/games/games.js"></script>
+	<script src="js/main/main.controller.js"></script>
+	<script src="js/main/main.js"></script>
+	<script
+		src="js/main/newGame/modal/addPlayerModal/addPlayerModal.controller.js"></script>
+	<script src="js/main/newGame/newGame.controller.js"></script>
+	<script src="js/main/newGame/newGame.js"></script>
+	<script src="js/main/round/adventures/adventures.controller.js"></script>
+	<script src="js/main/round/adventures/adventures.js"></script>
+	<script
+		src="js/main/round/players/modal/addItemModal/addItemModal.controller.js"></script>
+	<script
+		src="js/main/round/players/modal/addSkillModal/addSkillModal.controller.js"></script>
+	<script src="js/main/round/players/players.controller.js"></script>
+	<script src="js/main/round/players/players.js"></script>
+	<script src="js/main/round/round.controller.js"></script>
+	<script src="js/main/round/round.js"></script>
+	<script src="js/register/register.controller.js"></script>
+	<script src="js/register/register.js"></script>
+	<script src="components/footer/footer.directive.js"></script>
+	<script src="components/modal/modal.service.js"></script>
+	<script src="components/navbar/navbar.controller.js"></script>
+	<script src="components/navbar/navbar.directive.js"></script>
 </body>
 </html>

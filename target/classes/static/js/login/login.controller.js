@@ -8,29 +8,24 @@ angular.module('descentManagerApp')
 
     $scope.login = function(credentials) {
       if (credentials.username && credentials.password) {
-    	  var headers = credentials ? {authorization : "Basic "
-    	        + btoa(credentials.username + ":" + credentials.password)
-    	    } : {};
-    	    
-        $http.post('/DescentManager/login', {headers: headers})
+        $http.post('/login', credentials)
           .then(function(response){
-	            // Se guarda el usuario en la sesión global y se redirige a "main"
-	            $rootScope.currentUser = response.data;
-	            console.log(response.data);
-	            $scope.alert = false;
-	            $scope.alertClass = '';
-	            $scope.alertMessage = '';
-	            $state.go('items');
+            // Se guarda el usuario en la sesión global y se redirige a "main"
+            $rootScope.currentUser = response.data;
+            $scope.alert = false;
+            $scope.alertClass = '';
+            $scope.alertMessage = '';
+            $state.go('main.games');
           }, function(response){
-	            if (response.status === 401) {
-	              $scope.alertClass = 'alert-danger';
-	              $scope.alertMessage = 'Usuario o contraseña incorrectos';
-	              $scope.alert = true;
-	            } else {
-	              $scope.alertClass = 'alert-danger';
-	              $scope.alertMessage = 'Error inesperado. Contacte con el administrador';
-	              $scope.alert = true;
-	            }
+            if (response.status === 401) {
+              $scope.alertClass = 'alert-danger';
+              $scope.alertMessage = 'Usuario o contraseña incorrectos';
+              $scope.alert = true;
+            } else {
+              $scope.alertClass = 'alert-danger';
+              $scope.alertMessage = 'Error inesperado. Contacte con el administrador';
+              $scope.alert = true;
+            }
           });
       }
     };
@@ -38,4 +33,4 @@ angular.module('descentManagerApp')
     $scope.register = function() {
       $state.go('register');
     };
-}]);
+  }]);

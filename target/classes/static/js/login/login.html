@@ -1,25 +1,19 @@
 <header class="hero-unit" id="banner">
   <div class="container">
     <h1>Descent Manager</h1>
-    <p class="lead">La aplicación definitiva para gestionar tus partidas de Descent</p>
+    <p class="lead">{{'MAIN_SUBTITLE' | translate}}</p>
   </div>
 </header>
 
 <div class="container">
   <form class="form-signin">
     <div class="alert" role="alert" ng-class="alertClass" ng-show="alert">{{alertMessage}}</div>
-    <h2 class="form-signin-heading">Iniciar sesión</h2>
-    <label for="inputUsername" class="sr-only">Usuario</label>
-    <input type="text" id="inputUsername" ng-model="credentials.username" class="form-control" placeholder="Usuario" required autofocus>
-    <label for="inputPassword" class="sr-only">Contraseña</label>
-    <input type="password" id="inputPassword" ng-model="credentials.password" class="form-control" placeholder="Contraseña" required>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login(credentials)">Acceder</button>
-    <a href="#" class="register" ng-click="register()">Registrarse</a>
+    <h2 class="form-signin-heading">{{ 'HEADER_SIGN_IN' | translate }}</h2>
+    <label for="inputUsername" class="sr-only">{{ 'USERNAME' | translate }}</label>
+    <input type="text" id="inputUsername" ng-model="credentials.username" class="form-control" placeholder="{{ 'USERNAME' | translate }}" required autofocus>
+    <label for="inputPassword" class="sr-only">{{ 'PASSWORD' | translate }}</label>
+    <input type="password" id="inputPassword" ng-model="credentials.password" class="form-control" placeholder="{{ 'PASSWORD' | translate }}" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login(credentials)">{{ 'SIGN_IN' | translate }}</button>
+    <a href="#" class="register" ng-click="register()">{{ 'REGISTER' | translate }}</a>
   </form>
-</div>
-
-<div class="login-footer">
-  <p>Descent Manager v1.0.0 |
-    <a href="https://twitter.com/Heavychanante">@Heavychanante</a>
-  </p>
 </div>

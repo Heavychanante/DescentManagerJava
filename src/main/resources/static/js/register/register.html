@@ -1,0 +1,25 @@
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>Descent Manager</h1>
+    <p class="lead">{{'MAIN_SUBTITLE' | translate}}</p>
+  </div>
+</header>
+
+<div class="container">
+  <form class="form-signin">
+    <div class="alert" role="alert" ng-class="alertClass" ng-show="alert">{{alertMessage}}</div>
+    <h2 class="form-signin-heading">{{'HEADER_REGISTER' | translate}}</h2>
+    <label for="inputName" class="sr-only">{{'NAME' | translate}}</label>
+    <input type="text" id="inputName" ng-model="registration.name" class="form-control" placeholder="{{'NAME' | translate}}" required autofocus>
+    <label for="inputUsername" class="sr-only">{{'USERNAME' | translate}}</label>
+    <input type="text" id="inputUsername" ng-model="registration.username" class="form-control" placeholder="{{'USERNAME' | translate}}" required>
+    <label for="inputPassword" class="sr-only">{{'PASSWORD' | translate}}</label>
+    <input type="password" id="inputPassword" ng-model="registration.password" class="form-control" placeholder="{{'PASSWORD' | translate}}" required>
+    <label for="inputPassword2" class="sr-only">{{'RETYPE_PASSWORD' | translate}}</label>
+    <input type="password" id="inputPassword2" ng-model="registration.password2" class="form-control" placeholder="{{'RETYPE_PASSWORD' | translate}}" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="register(registration)">{{'REGISTER' | translate}}</button>
+    <a href="#" class="register" ng-click="login()">{{'HEADER_SIGN_IN' | translate}}</a>
+  </form>
+</div>
+
+<footer></footer>
