@@ -7,14 +7,15 @@ angular.module('descentManagerApp')
       list: function () {
         return $http({
                   method: 'GET',
-                  url: '/api/classes/'
+                  url: '/api/clases/'
               });
       },
       // Método que devuelve las clases asociadas a un arquetipo
       getClassesByArchetype: function (archetype_id) {
         return $http({
                   method: 'GET',
-                  url: '/api/classes/archetype/' + archetype_id
+                  url: '/api/clases/search/findByArquetipo/',
+                  params: { arquetipoId : archetype_id}
               });
       }
     };

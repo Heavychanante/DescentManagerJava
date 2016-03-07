@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('descentManagerApp')
-  .controller('AddPlayerModalCtrl', function ($scope, $modalInstance, Class, Character, players) {
+  .controller('AddPlayerModalCtrl', function ($scope, $uibModalInstance, Class, Character, players, $http) {
 
     $scope.alias        = '';
     $scope.personaje_id = 0;
@@ -15,7 +15,7 @@ angular.module('descentManagerApp')
     // No se mostrarán los personajes ya elegidos en la partida
     Character.list().then(function(response) {
       var encontrado = false;
-      var characters = response.data;
+      var characters = response.data._embedded.personajes;
       for (var i=0; i < characters.length; i++) {
         for (var j=0; (j < players.length) && !encontrado; j++) {
           if (players[j].personaje_id == characters[i].id) {
@@ -37,7 +37,7 @@ angular.module('descentManagerApp')
       var arquetipo_id = 0;
       for (var i=0; i < $scope.personajes.length; i++) {
         if ($scope.personajes[i].id == personaje_id) {
-          arquetipo_id = $scope.personajes[i].arquetipo_id;
+          arquetipo_id = $scope.personajes[i].arquetipo.id;
           $scope.personaje = $scope.personajes[i];
         }
       }
@@ -45,7 +45,7 @@ angular.module('descentManagerApp')
       // Se recuperan las clases
       Class.getClassesByArchetype(arquetipo_id)
         .then(function(response) {
-          $scope.clases = response.data;
+          $scope.clases = response.data._embedded.clases;
           $scope.showClasses = true;
         }, function(response) {
           console.error('Error llamando a Class.getClassesByArchetype(): ' + response.data + ' (' + response.status + ')');
@@ -65,16 +65,16 @@ angular.module('descentManagerApp')
     $scope.save = function () {
       var player = {
         alias: $scope.alias,
-        personaje_id: $scope.personaje_id,
+        personaje_url: $scope.personaje._links.self.href,
         personaje: $scope.personaje,
-        clase_id: $scope.clase_id,
+        clase_url: $scope.clase._links.self.href,
         clase: $scope.clase
       }
-      $modalInstance.close(player);
+      $uibModalInstance.close(player);
     };
 
     // Cancela la creación del usuario
     $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
+    	$uibModalInstance.dismiss('cancel');
     };
   });

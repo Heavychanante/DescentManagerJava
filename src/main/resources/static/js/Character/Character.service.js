@@ -7,7 +7,7 @@ angular.module('descentManagerApp')
       list: function () {
         return $http({
                   method: 'GET',
-                  url: '/api/characters/'
+                  url: '/api/personajes/'
               });
       }
     };

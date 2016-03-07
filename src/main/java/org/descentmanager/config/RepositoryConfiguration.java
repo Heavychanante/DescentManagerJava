@@ -4,6 +4,7 @@ import org.descentmanager.model.Arquetipo;
 import org.descentmanager.model.Clase;
 import org.descentmanager.model.Habilidad;
 import org.descentmanager.model.Jugador;
+import org.descentmanager.model.Partida;
 import org.descentmanager.model.Personaje;
 import org.descentmanager.model.pk.converter.CampaniaPartidaPkConverter;
 import org.descentmanager.model.pk.converter.DadoHabilidadPkConverter;
@@ -21,7 +22,7 @@ public class RepositoryConfiguration extends RepositoryRestConfigurerAdapter {
 	@Override
 	public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
 		config.setBasePath("/api");
-		config.exposeIdsFor(Habilidad.class, Jugador.class, Personaje.class, Arquetipo.class, Clase.class);
+		config.exposeIdsFor(Habilidad.class, Jugador.class, Personaje.class, Arquetipo.class, Clase.class, Partida.class);
 	}
 
 	@Override

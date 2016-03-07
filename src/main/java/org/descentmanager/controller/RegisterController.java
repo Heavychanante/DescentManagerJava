@@ -13,21 +13,22 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class LoginController {
+public class RegisterController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-//    @RequestMapping(value = "/login", method = RequestMethod.GET)
-//    public ModelAndView getLoginPage(@RequestParam Optional<String> error) {
-//        return new ModelAndView("login", "error", error);
-//    }
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-    public Usuario login(@RequestBody LinkedHashMap<String, Object> body) {
+    public Usuario register(@RequestBody LinkedHashMap<String, Object> body) {
+		String name		= (String) body.get("name");
 		String username = (String) body.get("username");
-		Usuario usuario = usuarioRepository.findByAlias(username);
+		String password = (String) body.get("password");
+		Usuario newUsuario = new Usuario();
+		newUsuario.setNombre(name);
+		newUsuario.setAlias(username);
+		newUsuario.setPassword(password);
+		Usuario usuario = usuarioRepository.save(newUsuario);
         return usuario;
     }
 }

@@ -7,7 +7,7 @@ angular.module('descentManagerApp')
       createGame: function (partida) {
         return $http({
   				method: 'POST',
-  				url: '/api/games/',
+  				url: '/api/partidas/',
   				data: partida
   			});
       },
@@ -15,14 +15,15 @@ angular.module('descentManagerApp')
       getUserGames: function (usuarioId) {
         return $http({
   				method: 'GET',
-  				url: '/api/games/user/' + usuarioId
+  				url: '/api/partidas/search/findByUsuarioOrderByCreacionDesc/',
+  				params: { usuarioId : usuarioId }
   			});
       },
       // Método que elimina una partida
-      deleteGame: function(partidaId) {
+      deleteGame: function(partidaUrl) {
         return $http({
           method: 'DELETE',
-          url: '/api/games/' + partidaId
+          url: partidaUrl
         });
       }
     };

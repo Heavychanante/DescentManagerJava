@@ -1,5 +1,3 @@
-/* jshint unused: false */
-
 'use strict';
 
 angular.module('descentManagerApp')

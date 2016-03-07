@@ -12,6 +12,7 @@ angular.module('descentManagerApp')
           .then(function(response){
             // Se guarda el usuario en la sesión global y se redirige a "main"
             $rootScope.currentUser = response.data;
+            $rootScope.currentUser.url = $rootScope.baseUrl + 'api/usuarios/' + response.data.id;
             $scope.alert = false;
             $scope.alertClass = '';
             $scope.alertMessage = '';
