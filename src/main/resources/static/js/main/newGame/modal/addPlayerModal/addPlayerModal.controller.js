@@ -4,9 +4,7 @@ angular.module('descentManagerApp')
   .controller('AddPlayerModalCtrl', function ($scope, $uibModalInstance, Class, Character, players, $http) {
 
     $scope.alias        = '';
-    $scope.personaje_id = 0;
     $scope.personaje    = null;
-    $scope.clase_id     = 0;
     $scope.clase       = null;
     $scope.showClasses  = false;
     $scope.personajes   = [];
@@ -18,7 +16,7 @@ angular.module('descentManagerApp')
       var characters = response.data._embedded.personajes;
       for (var i=0; i < characters.length; i++) {
         for (var j=0; (j < players.length) && !encontrado; j++) {
-          if (players[j].personaje_id == characters[i].id) {
+          if (players[j].personaje.id == characters[i].id) {
             encontrado = true;
           }
         }

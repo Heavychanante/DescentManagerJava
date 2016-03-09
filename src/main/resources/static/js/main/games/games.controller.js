@@ -14,7 +14,6 @@ angular.module('descentManagerApp')
 
     // Borra una partida
     $scope.deleteGame = function(partida) {
-    	console.log(partida);
       dialogs.confirm('Borrar partida', '¿Deseas borrar la partida "' + partida.nombre + '"?').
         result.then(function(){
           Alert.showLoader();
@@ -33,11 +32,11 @@ angular.module('descentManagerApp')
 	          		.then(function(response) {
 
 	          			Game.deleteGame(partida._links.self.href).
-		                    then(function(response){
+		                    then(function(response) {
 		                      $scope.init();
 		                      Alert.hideLoader();
 		                      Alert.showAlert('La partida se ha eliminado correctamente');
-		                    }, function(error){
+		                    }, function(error) {
 		                      var message = 'Error borrando la partida ' + partida.id + ': ' + error.data + ' (' + error.status + ')';
 		                      Alert.hideLoader();
 		                      Alert.showAlert(message, error);

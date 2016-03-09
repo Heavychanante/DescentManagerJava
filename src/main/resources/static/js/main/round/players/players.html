@@ -20,7 +20,7 @@
 										<label style="text-align: left; padding-left: 15px">{{ 'NAME' | translate }}:</label>
 									</div>
 									<div class="col-md-6">
-										<span ng-bind="jugador.Personaje.nombre"/>
+										<span ng-bind="jugador.personaje.nombre"></span>
 									</div>
 								</div>
 							</dl>
@@ -30,7 +30,7 @@
 										<label style="text-align: left; padding-left: 15px">{{ 'CLASS' | translate }}:</label>
 									</div>
 									<div class="col-md-5">
-										<span ng-bind="jugador.Clase.nombre"/>
+										<span ng-bind="jugador.clase.nombre"></span>
 									</div>
 								</div>
 							</dl>
@@ -40,7 +40,7 @@
 										<label style="text-align: left; padding-left: 15px">{{ 'SPEED' | translate }}:</label>
 									</div>
 									<div class="col-md-5">
-										<span ng-bind="jugador.Personaje.velocidad"/>
+										<span ng-bind="jugador.personaje.velocidad"></span>
 									</div>
 								</div>
 							</dl>
@@ -50,7 +50,7 @@
 										<label style="text-align: left; padding-left: 15px">{{ 'LIFE' | translate }}:</label>
 									</div>
 									<div class="col-md-7">
-										<span ng-bind="jugador.Personaje.vida"/>
+										<span ng-bind="jugador.personaje.vida"></span>
 									</div>
 								</div>
 							</dl>
@@ -60,7 +60,7 @@
 										<label style="text-align: left; padding-left: 15px">{{ 'STAMINA' | translate }}:</label>
 									</div>
 									<div class="col-md-6">
-										<span ng-bind="jugador.Personaje.aguante"/>
+										<span ng-bind="jugador.personaje.aguante"></span>
 									</div>
 								</div>
 							</dl>
@@ -70,7 +70,7 @@
 										<label style="text-align: left; padding-left: 15px">{{ 'DEFENSE' | translate }}:</label>
 									</div>
 									<div class="col-md-6">
-										<span ng-bind="jugador.Personaje.defensa"/>
+										<span ng-bind="jugador.personaje.defensa"></span>
 									</div>
 								</div>
 							</dl>
@@ -83,7 +83,7 @@
 										<label style="text-align: left; padding-left: 15px">{{ 'STRENGTH' | translate }}:</label>
 									</div>
 									<div class="col-md-8">
-										<span ng-bind="jugador.Personaje.fuerza"/>
+										<span ng-bind="jugador.personaje.fuerza"></span>
 									</div>
 								</div>
 							</dl>
@@ -93,7 +93,7 @@
 										<label style="text-align: left; padding-left: 15px">{{ 'KNOWLEDGE' | translate }}:</label>
 									</div>
 									<div class="col-md-6">
-										<span ng-bind="jugador.Personaje.conocimiento"/>
+										<span ng-bind="jugador.personaje.conocimiento"></span>
 									</div>
 								</div>
 							</dl>
@@ -103,7 +103,7 @@
 										<label style="text-align: left; padding-left: 15px">{{ 'WILLPOWER' | translate }}:</label>
 									</div>
 									<div class="col-md-8">
-										<span ng-bind="jugador.Personaje.voluntad"/>
+										<span ng-bind="jugador.personaje.voluntad"></span>
 									</div>
 								</div>
 							</dl>
@@ -113,7 +113,7 @@
 										<label style="text-align: left; padding-left: 15px">{{ 'PERCEPTION' | translate }}:</label>
 									</div>
 									<div class="col-md-7">
-										<span ng-bind="jugador.Personaje.percepcion"/>
+										<span ng-bind="jugador.personaje.percepcion"></span>
 									</div>
 								</div>
 							</dl>
@@ -121,14 +121,14 @@
 								<label style="text-align: left; padding-left: 15px">{{ 'ABILITY' | translate }}</label>
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true"
 									data-toggle="tooltip" data-placement="right"
-									title="{{jugador.Personaje.capacidad}}">
+									title="{{jugador.personaje.capacidad}}">
 								</span>
 							</dl>
 							<dl class="col-sm-2 col-md-2">
 								<label style="text-align: left; padding-left: 15px">{{ 'FEAT' | translate }}</label>
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true"
 									data-toggle="tooltip" data-placement="right"
-									title="{{jugador.Personaje.proeza}}">
+									title="{{jugador.personaje.proeza}}">
 								</span>
 							</dl>
 						</div>
@@ -146,7 +146,7 @@
 									</span> <input type="text"  ng-model="jugador.vida" ng-disabled="true"
 										class="form-control input-mini text-center"> <span
 										class="input-group-btn">
-										<button class="btn btn-default" type="button" ng-click="incLife(jugador)" ng-disabled="jugador.vida == jugador.Personaje.vida">+</button>
+										<button class="btn btn-default" type="button" ng-click="incLife(jugador)" ng-disabled="jugador.vida == jugador.personaje.vida">+</button>
 									</span>
 								</div>
 							</div>
@@ -160,7 +160,7 @@
 									</span>
 									<input type="text" ng-model="jugador.aguante" class="form-control input-mini text-center" ng-disabled="true">
 									<span class="input-group-btn">
-										<button class="btn btn-default" type="button" ng-click="incStamina(jugador)" ng-disabled="jugador.aguante == jugador.Personaje.aguante">+</button>
+										<button class="btn btn-default" type="button" ng-click="incStamina(jugador)" ng-disabled="jugador.aguante == jugador.personaje.aguante">+</button>
 									</span>
 								</div>
 							</div>

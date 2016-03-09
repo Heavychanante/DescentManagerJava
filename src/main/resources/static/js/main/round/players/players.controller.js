@@ -3,15 +3,15 @@
 'use strict';
 
 angular.module('descentManagerApp')
-  .controller('PlayersCtrl', ['$scope', '$modal', 'Player', 'uiGridConstants', '$q', 'Alert', 'dialogs', '$stateParams',
-              function($scope, $modal, Player, uiGridConstants, $q, Alert, dialogs, $stateParams) {
+  .controller('PlayersCtrl', ['$scope', '$uibModal', 'Player', 'uiGridConstants', '$q', 'Alert', 'dialogs', '$stateParams',
+              function($scope, $uibModal, Player, uiGridConstants, $q, Alert, dialogs, $stateParams) {
     $scope.init = function() {
   		$scope.selectedTab = 0;
-      $scope.partida_id = $stateParams.game_id;
+  		$scope.partida_id = $stateParams.game_id;
 
   		Player.getGamePlayers($scope.partida_id).
   			then(function(response) {
-  				$scope.jugadores = response.data;
+  				$scope.jugadores = response.data._embedded.jugadores;
   			}, function(response) {
   				console.error('Error llamando a Player.list(): ' + response.data + ' (' + response.status + ')');
   			});
@@ -22,7 +22,7 @@ angular.module('descentManagerApp')
   	};
 
     $scope.openSkillModal = function(jugador) {
-      var modalInstance = $modal.open({
+      var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'js/main/round/players/modal/addSkillModal/addSkillModal.html',
         controller: 'AddSkillModalCtrl',
@@ -63,7 +63,7 @@ angular.module('descentManagerApp')
     };
 
     $scope.openItemModal = function(jugador) {
-      var modalInstance = $modal.open({
+      var modalInstance = $uibModal.open({
         animation: true,
         templateUrl: 'js/main/round/players/modal/addItemModal/addItemModal.html',
         controller: 'AddItemModalCtrl',

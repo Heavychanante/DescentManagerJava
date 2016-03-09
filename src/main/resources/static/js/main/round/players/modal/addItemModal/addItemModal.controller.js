@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('descentManagerApp')
-  .controller('AddItemModalCtrl', function ($scope, $modalInstance, Item, uiGridConstants, jugador) {
+  .controller('AddItemModalCtrl', function ($scope, $uibModalInstance, Item, uiGridConstants, jugador, $q) {
     $scope.player = jugador;
     $scope.totalSize = 0;
     $scope.currentPage = 0;
@@ -17,11 +17,11 @@ angular.module('descentManagerApp')
           newItems.push($scope.totalItems[i]);
         }
       }
-      $modalInstance.close(newItems);
+      $uibModalInstance.close(newItems);
     };
 
     $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
+      $uibModalInstance.dismiss('cancel');
     };
 
     $scope.pageChanged = function() {
@@ -29,19 +29,53 @@ angular.module('descentManagerApp')
                                                     (($scope.currentPage - 1)*$scope.pageSize) + $scope.pageSize);
     };
 
-    // Recupera los objetos asignables al jugador (todos)
-    Item.list()
-      .then(function(response){
-        $scope.totalItems = response.data;
-        $scope.totalSize = $scope.totalItems.length;
-        for (var i=0; i < $scope.totalSize; i++) {
-          $scope.totalItems[i].selected = false;
-        }
-        $scope.currentItems = $scope.totalItems.slice($scope.currentPage, $scope.pageSize);
-        $scope.numPages = Math.ceil($scope.totalSize / $scope.pageSize);
-        console.log($scope.totalSize);
-        console.log($scope.numPages);
-      }, function(error){
-        console.log('ERROR getObjetosAsignables -> ' + error);
-      });
+    // Obtiene los objetos pertenecienes al jugador
+    Item.getObjetosByJugador($scope.player.id)
+    	.then(function(response) {
+    		var objetosJugador = response.data._embedded.jugadorObjeto;
+    		console.log(objetosJugador);
+    		// Obtiene los objetos asignables al jugador
+    	    Item.list()
+    	      .then(function(response){
+    	    	  // Se recupera la información de los objetos asignables
+    	    	  var objetos = response.data._embedded.objetos;
+    	    	  var objetosPromises = [];
+    	    	  for (var i=0; i < objetos.length; i++) {
+    	    		  var exists = false;
+    	    		  for (var j=0; j < objetosJugador.length; j++) {
+    	    			  if (objetosJugador[j].id.objetoId == objetos[i].id) {
+    	    				  exists = true;
+    	    			  }
+    	    		  }
+    	    		  if (!exists) {
+    	    			  objetos[i].selected = false;
+    	    			  $scope.totalItems.push(objetos[i]);
+    	    		  }
+    	    	  }
+
+    	    	  $scope.totalSize = $scope.totalItems.length;
+	    		  $scope.currentItems = $scope.totalItems.slice($scope.currentPage, $scope.pageSize);
+	    		  $scope.numPages = Math.ceil($scope.totalSize / $scope.pageSize);
+
+    	    	  // Cuando se recuperan todos los objetos asignables se devuelve el control
+//    	    	  $q.all(objetosPromises)
+//    	    	  	.then(function(values) {
+//    	    	  		$scope.totalItems = values;
+//    	    		    $scope.totalSize = $scope.totalItems.length;
+//    	    		    for (var i=0; i < $scope.totalSize; i++) {
+//    	    		    	$scope.totalItems[i].data.selected = false;
+//    	    		    }
+//    	    		    $scope.currentItems = $scope.totalItems.slice($scope.currentPage, $scope.pageSize);
+//    	    		    $scope.numPages = Math.ceil($scope.totalSize / $scope.pageSize);
+//    	    	  	}, function(error) {
+//    	    	  		console.log('ERROR objetos.list() -> ' + error);
+//    	    	  	});
+
+    	      }, function(error){
+    	        console.log('ERROR objetos.list() -> ' + error);
+    	      });
+    	}, function(error) {
+    		console.log('ERROR getObjetosByJugador -> ' + error);
+    	});
+    
   });

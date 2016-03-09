@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('descentManagerApp')
-  .controller('AddSkillModalCtrl', function ($scope, $modalInstance, Skill, uiGridConstants, jugador) {
+  .controller('AddSkillModalCtrl', function ($scope, $uibModalInstance, Skill, uiGridConstants, jugador) {
     $scope.player = jugador;
     $scope.totalItems = 0;
     $scope.currentPage = 0;
@@ -17,11 +17,11 @@ angular.module('descentManagerApp')
           newSkills.push($scope.totalSkills[i]);
         }
       }
-      $modalInstance.close(newSkills);
+      $uibModalInstance.close(newSkills);
     };
 
     $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');
+      $uibModalInstance.dismiss('cancel');
     };
 
     $scope.pageChanged = function() {

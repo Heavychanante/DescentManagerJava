@@ -7,21 +7,34 @@ angular.module('descentManagerApp')
   		list : function() {
   			return $http({
                   method: 'GET',
-                  url: '/api/items/'
+                  url: '/api/objetos/'
               });
   		},
-  		// Método que obtiene los objetos asignables a un jugador
-  		getObjetosAsignables : function(jugadorId) {
+  		// Método que obtiene un objeto a partir de su ID
+  		findById : function(objeto_id) {
   			return $http({
                   method: 'GET',
-                  url: '/api/items/player/' + jugadorId
+                  url: '/api/objetos/' + objeto_id
               });
   		},
-  		// Método que obtiene listado paginado de objetos asignables a un jugador
-  		getObjetosAsignablesPaginadas: function(jugadorId, indice, cantidad) {
+  		// Método que obtiene los objetos pertenecientes a un jugador
+  		getObjetosByJugador: function(jugadorId) {
+  			return $http({
+                  method: 'GET',
+                  url: '/api/jugadorObjeto/search/findByJugador/',
+                  params: { jugadorId : jugadorId }
+              });
+  		},
+  		// Método que obtiene listado paginado de los objetos pertenecientes a un jugador
+  		getObjetosByJugadorPaginados: function(jugadorId, indice, cantidad) {
   			return $http({
   				method: 'GET',
-  				url: 'api/items/player/' + jugadorId + '/i/' + indice + '/n/' + cantidad
+  				url: '/api/jugadorObjeto/search/findByJugador/',
+  				params: {
+  					jugadorId : jugadorId,
+  					page : indice,
+  					size : cantidad
+  				}
   			});
   		}
   	};
