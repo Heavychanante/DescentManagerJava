@@ -33,11 +33,11 @@ angular.module('descentManagerApp')
   			});
   		},
   		// Método que añade un objeto a un jugador
-  		setItem: function(jugadorId, objeto) {
+  		setItem: function(jugadorId, objetoId) {
   			return $http({
   				method: 'POST',
-  				url: '/api/jugadores/' + jugadorId + '/items',
-  				data: objeto
+  				url: '/api/jugadorObjeto/',
+  				data: { id : { jugadorId: jugadorId, objetoId: objetoId } }
   			});
   		},
   		// Método que crea un nuevo jugador
@@ -67,7 +67,7 @@ angular.module('descentManagerApp')
       deleteItem: function(jugadorId, objetoId) {
         return $http({
           method: 'DELETE',
-          url: '/api/jugadores/' + jugadorId + '/items/' + objetoId,
+          url: '/api/jugadorObjeto/' + jugadorId + '-' + objetoId,
         });
       },
    // Método que elimina un jugador

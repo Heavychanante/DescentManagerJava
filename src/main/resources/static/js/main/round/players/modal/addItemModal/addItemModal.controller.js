@@ -33,7 +33,7 @@ angular.module('descentManagerApp')
     Item.getObjetosByJugador($scope.player.id)
     	.then(function(response) {
     		var objetosJugador = response.data._embedded.jugadorObjeto;
-    		console.log(objetosJugador);
+
     		// Obtiene los objetos asignables al jugador
     	    Item.list()
     	      .then(function(response){
@@ -56,20 +56,6 @@ angular.module('descentManagerApp')
     	    	  $scope.totalSize = $scope.totalItems.length;
 	    		  $scope.currentItems = $scope.totalItems.slice($scope.currentPage, $scope.pageSize);
 	    		  $scope.numPages = Math.ceil($scope.totalSize / $scope.pageSize);
-
-    	    	  // Cuando se recuperan todos los objetos asignables se devuelve el control
-//    	    	  $q.all(objetosPromises)
-//    	    	  	.then(function(values) {
-//    	    	  		$scope.totalItems = values;
-//    	    		    $scope.totalSize = $scope.totalItems.length;
-//    	    		    for (var i=0; i < $scope.totalSize; i++) {
-//    	    		    	$scope.totalItems[i].data.selected = false;
-//    	    		    }
-//    	    		    $scope.currentItems = $scope.totalItems.slice($scope.currentPage, $scope.pageSize);
-//    	    		    $scope.numPages = Math.ceil($scope.totalSize / $scope.pageSize);
-//    	    	  	}, function(error) {
-//    	    	  		console.log('ERROR objetos.list() -> ' + error);
-//    	    	  	});
 
     	      }, function(error){
     	        console.log('ERROR objetos.list() -> ' + error);

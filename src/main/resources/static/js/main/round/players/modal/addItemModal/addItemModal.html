@@ -38,8 +38,8 @@
    <div>
      <p ng-hide="totalSize > 0">{{ 'NO_ITEMS_TO_ADD' | translate }}</p>
    </div>
-   <pagination total-items="totalSize" ng-model="currentPage" boundary-links="true" items-per-page="pageSize"
-               rotate="false" max-size="15" ng-change="pageChanged()"></pagination>
+   <uib-pagination total-items="totalSize" ng-model="currentPage" boundary-links="true" items-per-page="pageSize"
+               rotate="false" max-size="15" ng-change="pageChanged()"></uib-pagination>
 </div>
 <div class="modal-footer">
   <button class="btn btn-primary" type="button" ng-click="save()">{{ 'SAVE' | translate }}</button>

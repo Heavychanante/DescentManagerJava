@@ -246,13 +246,13 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="objeto in jugador.Objetos">
-										<td ng-bind='objeto.nombre'></td>
-										<td ng-bind='objeto.tipo'></td>
-										<td ng-bind='objeto.precio'></td>
-										<td ng-bind='objeto.manos'></td>
-										<td ng-bind='objeto.a_distancia | numberToBoolean'></td>
-										<td ng-bind-html='objeto.descripcion | embed'></td>
+									<tr ng-repeat="objeto in jugador.objetos">
+										<td ng-bind='objeto.data.nombre'></td>
+										<td ng-bind='objeto.data.tipo'></td>
+										<td ng-bind='objeto.data.precio'></td>
+										<td ng-bind='objeto.data.manos'></td>
+										<td ng-bind='objeto.data.a_distancia | numberToBoolean'></td>
+										<td ng-bind-html='objeto.data.descripcion | embed'></td>
 										<td>
 											<button type="button" class="btn btn-default btn-md pull-right" ng-click="deleteObjeto(jugador, $index)">
 												<span class="glyphicon glyphicon-remove" aria-hidden="true" title="{{ 'DELETE_ITEM' | translate }}" style="color:red"></span>

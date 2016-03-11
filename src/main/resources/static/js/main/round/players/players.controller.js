@@ -3,15 +3,85 @@
 'use strict';
 
 angular.module('descentManagerApp')
-  .controller('PlayersCtrl', ['$scope', '$uibModal', 'Player', 'uiGridConstants', '$q', 'Alert', 'dialogs', '$stateParams',
-              function($scope, $uibModal, Player, uiGridConstants, $q, Alert, dialogs, $stateParams) {
-    $scope.init = function() {
-  		$scope.selectedTab = 0;
+  .controller('PlayersCtrl', ['$scope', '$uibModal', 'Player', 'uiGridConstants', '$q', 'Alert', 'dialogs', '$stateParams', 'Item',
+              function($scope, $uibModal, Player, uiGridConstants, $q, Alert, dialogs, $stateParams, Item) {
+    $scope.init = function(selectedTab) {
+  		$scope.selectedTab = selectedTab;
   		$scope.partida_id = $stateParams.game_id;
 
   		Player.getGamePlayers($scope.partida_id).
   			then(function(response) {
   				$scope.jugadores = response.data._embedded.jugadores;
+
+  				// Se recuperan los objetos de cada jugador
+  				var jugadorObjetoPromises = [];
+  				for (var i=0; i < $scope.jugadores.length; i++) {
+  					jugadorObjetoPromises.push(Item.getObjetosByJugador($scope.jugadores[i].id));
+  				}
+
+  				$q.all(jugadorObjetoPromises)
+  					.then(function(response) {
+
+  						var jugadoresObjetos = response;
+  						var objetosPromises = [];
+						for (var i=0; i < jugadoresObjetos.length; i++) {
+							// Se guardan los objetos correpondientes a cada jugador
+							objetosPromises[i] = [];
+							var jugadorObjeto = jugadoresObjetos[i].data._embedded.jugadorObjeto;
+							for (var j=0; j < jugadorObjeto.length; j++) {
+								objetosPromises[i].push(Item.findById(jugadorObjeto[j].id.objetoId));
+							}
+						}
+
+						for (var k=0; k < objetosPromises.length; k++) {
+							(function(k) {
+								$q.all(objetosPromises[k])
+									.then(function(response) {
+										$scope.jugadores[k].objetos = response;
+									}, function(response) {
+										console.error('Error llamando a Item.getObjetosByJugador: ' + response.data + ' (' + response.status + ')');
+									});
+							})(k);
+						}
+
+					}, function(response) {
+						console.error('Error llamando a Item.getObjetosByJugador: ' + response.data + ' (' + response.status + ')');
+					});
+ 
+  				// Se recuperan las habilidades de cada jugador
+  				var jugadorHabilidadPromises = [];
+  				for (var i=0; i < $scope.jugadores.length; i++) {
+  					jugadorHabilidadPromises.push(Item.getObjetosByJugador($scope.jugadores[i].id));
+  				}
+
+  				$q.all(jugadorObjetoPromises)
+  					.then(function(response) {
+
+  						var jugadoresObjetos = response;
+  						var objetosPromises = [];
+						for (var i=0; i < jugadoresObjetos.length; i++) {
+							// Se guardan los objetos correpondientes a cada jugador
+							objetosPromises[i] = [];
+							var jugadorObjeto = jugadoresObjetos[i].data._embedded.jugadorObjeto;
+							for (var j=0; j < jugadorObjeto.length; j++) {
+								objetosPromises[i].push(Item.findById(jugadorObjeto[j].id.objetoId));
+							}
+						}
+
+						for (var k=0; k < objetosPromises.length; k++) {
+							(function(k) {
+								$q.all(objetosPromises[k])
+									.then(function(response) {
+										$scope.jugadores[k].objetos = response;
+									}, function(response) {
+										console.error('Error llamando a Item.getObjetosByJugador: ' + response.data + ' (' + response.status + ')');
+									});
+							})(k);
+						}
+
+					}, function(response) {
+						console.error('Error llamando a Item.getObjetosByJugador: ' + response.data + ' (' + response.status + ')');
+					});
   			}, function(response) {
   				console.error('Error llamando a Player.list(): ' + response.data + ' (' + response.status + ')');
   			});
@@ -43,16 +113,8 @@ angular.module('descentManagerApp')
           promises.push(promise);
         }
         $q.all(promises).then(function(response){
-          // Se recarga el jugador
-          Player.findById(jugador.id).then(function(response){
-            for (var i=0; i < $scope.jugadores.length; i++) {
-              if ($scope.jugadores[i].id === jugador.id) {
-                $scope.jugadores[i] = response.data[0];
-              }
-            }
-          }, function(error){
-            console.log('Error fetching player ' + jugador.id + ' info: ' + error.message);
-          });
+        	// Se recarga el jugador
+        	$scope.init($scope.selectedTab);
         }, function(error){
           console.log('Error saving new skills to player ' + jugador.id + ': ' + error.message);
         });
@@ -80,20 +142,12 @@ angular.module('descentManagerApp')
 
         // Se actualiza el jugador con los nuevos objetos
         for (var i=0; i < newItems.length; i++) {
-          var promise = Player.setItem(jugador.id, newItems[i]);
+          var promise = Player.setItem(jugador.id, newItems[i].id);
           promises.push(promise);
         }
         $q.all(promises).then(function(response){
-          // Se recarga el jugador
-          Player.findById(jugador.id).then(function(response){
-            for (var i=0; i < $scope.jugadores.length; i++) {
-              if ($scope.jugadores[i].id === jugador.id) {
-                $scope.jugadores[i] = response.data[0];
-              }
-            }
-          }, function(error){
-            console.log('Error fetching player ' + jugador.id + ' info: ' + error.message);
-          });
+        	// Se recarga el jugador
+        	$scope.init($scope.selectedTab);
         }, function(error){
           console.log('Error saving new items to player ' + jugador.id + ': ' + error.message);
         });
@@ -124,9 +178,9 @@ angular.module('descentManagerApp')
   		Player.update(jugador).
   			then(function(response) {
   				console.log('Jugador ' + jugador.alias + ' actualizado: ' + response.status);
-          $scope.init();
-          Alert.hideLoader();
-          Alert.showAlert('El jugador se ha actualizado correctamente');
+		        $scope.init($scope.selectedTab);
+		        Alert.hideLoader();
+		        Alert.showAlert('El jugador se ha actualizado correctamente');
   			}, function(response) {
   				console.error('Error actualizando al jugador ' + jugador.alias + ': ' + response.data + ' (' + response.status + ')');
   			});
@@ -140,7 +194,7 @@ angular.module('descentManagerApp')
           Alert.showLoader();
           Player.deleteSkill(jugador.id, habilidad.id).
             then(function(response){
-              $scope.init();
+              $scope.init($scope.selectedTab);
               Alert.hideLoader();
               Alert.showAlert('La habilidad se ha eliminado correctamente');
             }, function(error){
@@ -151,13 +205,13 @@ angular.module('descentManagerApp')
 
     // Método que elimina un objeto de un jugador
     $scope.deleteObjeto = function(jugador, index) {
-      var objeto = jugador.Objetos[index];
+      var objeto = jugador.objetos[index].data;
       dialogs.confirm('Borrar objeto', '¿Deseas borrar el objeto "' + objeto.nombre + '" del jugador "' + jugador.alias + '"?').
         result.then(function(){
           Alert.showLoader();
           Player.deleteItem(jugador.id, objeto.id).
             then(function(response){
-              $scope.init();
+              $scope.init($scope.selectedTab);
               Alert.hideLoader();
               Alert.showAlert('El objeto se ha eliminado correctamente');
             }, function(error){
@@ -167,5 +221,5 @@ angular.module('descentManagerApp')
     };
 
     // Se inicializa la vista de jugadores
-  	$scope.init();
+  	$scope.init(0);
   }]);
