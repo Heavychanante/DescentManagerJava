@@ -60,7 +60,7 @@ angular.module('descentManagerApp')
       deleteSkill: function(jugadorId, habilidadId) {
         return $http({
           method: 'DELETE',
-          url: '/api/jugadores/' + jugadorId + '/skills/' + habilidadId,
+          url: '/api/jugadorHabilidad/' + jugadorId + '-' + habilidadId,
         });
       },
       // Método que elimina un objeto a un jugador

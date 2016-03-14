@@ -196,7 +196,7 @@ angular.module('descentManagerApp')
 
     // Método que elimina una habilidad de un jugador
     $scope.deleteHabilidad = function(jugador, index) {
-      var habilidad = jugador.Habilidads[index];
+      var habilidad = jugador.habilidades[index].data;
       dialogs.confirm('Borrar habilidad', '¿Deseas borrar la habilidad "' + habilidad.nombre + '" del jugador "' + jugador.alias + '"?').
         result.then(function(){
           Alert.showLoader();
