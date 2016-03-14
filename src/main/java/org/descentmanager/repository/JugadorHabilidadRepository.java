@@ -3,7 +3,6 @@ package org.descentmanager.repository;
 import java.util.List;
 
 import org.descentmanager.model.JugadorHabilidad;
-import org.descentmanager.model.JugadorObjeto;
 import org.descentmanager.model.pk.JugadorHabilidadPk;
 import org.descentmanager.repository.projection.JugadorHabilidadProjection;
 import org.springframework.data.repository.PagingAndSortingRepository;

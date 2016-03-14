@@ -25,11 +25,11 @@ angular.module('descentManagerApp')
   			});
   		},
       // Método que añade una habilidad a un jugador
-  		setSkill: function (jugadorId, habilidad){
+  		setSkill: function (jugadorId, habilidadId){
   			return $http({
   				method: 'POST',
-  				url: '/api/jugadores/' + jugadorId + '/skills',
-  				data: habilidad
+  				url: '/api/jugadorHabilidad/',
+  				data: { id : { jugadorId: jugadorId, habilidadId: habilidadId } }
   			});
   		},
   		// Método que añade un objeto a un jugador

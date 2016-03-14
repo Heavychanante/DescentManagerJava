@@ -29,17 +29,17 @@ angular.module('descentManagerApp')
                                                       (($scope.currentPage - 1)*$scope.pageSize) + $scope.pageSize);
     };
 
-    // Recupera las habilidades asignables al jugador
-    Skill.getHabilidadesAsignables($scope.player.id)
-      .then(function(response){
-        $scope.totalSkills = response.data;
-        $scope.totalItems = $scope.totalSkills.length;
-        for (var i=0; i < $scope.totalItems; i++) {
-          $scope.totalSkills[i].selected = false;
-        }
-        $scope.currentSkills = $scope.totalSkills.slice($scope.currentPage, $scope.pageSize);
-        $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
-      }, function(error){
-        console.log('ERROR getHabilidadesAsignables -> ' + error);
-      });
+    // Recupera las habilidades asignables al jugador (las de su clase)
+    Skill.findByClase($scope.player.clase.id)
+    	.then(function(response) {
+	        $scope.totalSkills = response.data._embedded.habilidades;
+	        $scope.totalItems = $scope.totalSkills.length;
+	        for (var i=0; i < $scope.totalItems; i++) {
+	        	$scope.totalSkills[i].selected = false;
+	        }
+	        $scope.currentSkills = $scope.totalSkills.slice($scope.currentPage, $scope.pageSize);
+	        $scope.numPages = Math.ceil($scope.totalItems / $scope.pageSize);
+    	}, function(error) {
+	        console.log('ERROR Skill.findByClase -> ' + error);
+    	});
   });

@@ -5,6 +5,7 @@
 angular.module('descentManagerApp')
   .filter('getCantidad', function () {
     return function (input) {
+    	console.log(input);
       var cantidad;
       if (input.JugadorHabilidad) {
         cantidad = input.JugadorHabilidad.cantidad;

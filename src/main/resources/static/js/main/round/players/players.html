@@ -210,12 +210,12 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="habilidad in jugador.Habilidads">
-										<td ng-bind="habilidad.nombre"></td>
-										<td ng-bind="habilidad.penalizacion"></td>
-										<td ng-bind="habilidad.coste_experiencia"></td>
-										<td ng-bind="habilidad | getCantidad"></td>
-										<td ng-bind-html="habilidad.descripcion | embed"></td>
+									<tr ng-repeat="habilidad in jugador.habilidades">
+										<td ng-bind="habilidad.data.nombre"></td>
+										<td ng-bind="habilidad.data.penalizacion"></td>
+										<td ng-bind="habilidad.data.costeExperiencia"></td>
+										<td ng-bind="habilidad.data.cantidad"></td>
+										<td ng-bind-html="habilidad.data.descripcion | embed"></td>
 										<td>
 											<button type="button" class="btn btn-default btn-md pull-right" ng-click="deleteHabilidad(jugador, $index)">
 												<span class="glyphicon glyphicon-remove" aria-hidden="true" title="{{ 'DELETE_SKILL' | translate }}" style="color:red"></span>

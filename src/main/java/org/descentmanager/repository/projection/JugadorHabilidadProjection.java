@@ -12,5 +12,6 @@ public interface JugadorHabilidadProjection {
 	Timestamp getCreacion();
 	JugadorHabilidadPk getId();
 	Timestamp getModificacion();
+	Integer getCantidad();
 
 }

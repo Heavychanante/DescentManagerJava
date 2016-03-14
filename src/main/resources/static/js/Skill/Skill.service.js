@@ -36,6 +36,14 @@ angular.module('descentManagerApp')
   					size : cantidad
   				}
   			});
+  		},
+  		// Método que obtiene el listado de habilidades que pertenecen a una determinada clase
+  		findByClase: function(claseId) {
+  			return $http({
+                  method: 'GET',
+                  url: '/api/habilidades/search/findByClase/',
+                  params: { claseId : claseId }
+              });
   		}
   	};
   }]);

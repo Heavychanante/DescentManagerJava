@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module('descentManagerApp')
-  .controller('PlayersCtrl', ['$scope', '$uibModal', 'Player', 'uiGridConstants', '$q', 'Alert', 'dialogs', '$stateParams', 'Item',
-              function($scope, $uibModal, Player, uiGridConstants, $q, Alert, dialogs, $stateParams, Item) {
+  .controller('PlayersCtrl', ['$scope', '$uibModal', 'Player', 'uiGridConstants', '$q', 'Alert', 'dialogs', '$stateParams', 'Item', 'Skill',
+              function($scope, $uibModal, Player, uiGridConstants, $q, Alert, dialogs, $stateParams, Item, Skill) {
     $scope.init = function(selectedTab) {
   		$scope.selectedTab = selectedTab;
   		$scope.partida_id = $stateParams.game_id;
@@ -51,36 +51,44 @@ angular.module('descentManagerApp')
   				// Se recuperan las habilidades de cada jugador
   				var jugadorHabilidadPromises = [];
   				for (var i=0; i < $scope.jugadores.length; i++) {
-  					jugadorHabilidadPromises.push(Item.getObjetosByJugador($scope.jugadores[i].id));
+  					jugadorHabilidadPromises.push(Skill.getHabilidadesByJugador($scope.jugadores[i].id));
   				}
 
-  				$q.all(jugadorObjetoPromises)
+  				$q.all(jugadorHabilidadPromises)
   					.then(function(response) {
 
-  						var jugadoresObjetos = response;
-  						var objetosPromises = [];
-						for (var i=0; i < jugadoresObjetos.length; i++) {
-							// Se guardan los objetos correpondientes a cada jugador
-							objetosPromises[i] = [];
-							var jugadorObjeto = jugadoresObjetos[i].data._embedded.jugadorObjeto;
-							for (var j=0; j < jugadorObjeto.length; j++) {
-								objetosPromises[i].push(Item.findById(jugadorObjeto[j].id.objetoId));
+  						var jugadoresHabilidades = response;
+  						var habilidadesPromises = [];
+  						var cantidades = []
+						for (var i=0; i < jugadoresHabilidades.length; i++) {
+							// Se guardan las habilidades correpondientes a cada jugador
+							cantidades[i] = [];
+							habilidadesPromises[i] = [];
+							var jugadorHabilidad = jugadoresHabilidades[i].data._embedded.jugadorHabilidad;
+							for (var j=0; j < jugadorHabilidad.length; j++) {
+								cantidades[i].push(jugadorHabilidad[j].cantidad);
+								habilidadesPromises[i].push(Skill.findById(jugadorHabilidad[j].id.habilidadId));
 							}
 						}
 
-						for (var k=0; k < objetosPromises.length; k++) {
+						for (var k=0; k < habilidadesPromises.length; k++) {
 							(function(k) {
-								$q.all(objetosPromises[k])
+								$q.all(habilidadesPromises[k])
 									.then(function(response) {
-										$scope.jugadores[k].objetos = response;
+										var cantidadesJugador = cantidades[k];
+										var habilidades = response;
+										for (var index=0; index < habilidades.length; index++) {
+											habilidades[index].data.cantidad = cantidadesJugador[index];
+										}
+										$scope.jugadores[k].habilidades = habilidades;
 									}, function(response) {
-										console.error('Error llamando a Item.getObjetosByJugador: ' + response.data + ' (' + response.status + ')');
+										console.error('Error llamando a Skill.getHabilidadesByJugador: ' + response.data + ' (' + response.status + ')');
 									});
 							})(k);
 						}
 
-					}, function(response) {
-						console.error('Error llamando a Item.getObjetosByJugador: ' + response.data + ' (' + response.status + ')');
+  					}, function(response) {
+						console.error('Error llamando a Skill.getHabilidadesByJugador: ' + response.data + ' (' + response.status + ')');
 					});
   			}, function(response) {
   				console.error('Error llamando a Player.list(): ' + response.data + ' (' + response.status + ')');
@@ -109,8 +117,8 @@ angular.module('descentManagerApp')
 
         // Se actualiza el jugador con las nuevas habilidades
         for (var i=0; i < newSkills.length; i++) {
-          var promise = Player.setSkill(jugador.id, newSkills[i]);
-          promises.push(promise);
+        	var promise = Player.setSkill(jugador.id, newSkills[i].id);
+        	promises.push(promise);
         }
         $q.all(promises).then(function(response){
         	// Se recarga el jugador
