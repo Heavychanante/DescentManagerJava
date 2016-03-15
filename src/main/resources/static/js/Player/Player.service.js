@@ -52,7 +52,7 @@ angular.module('descentManagerApp')
   		update: function(jugador) {
   			return $http({
   				method: 'PUT',
-  				url: '/api/jugadores',
+  				url: '/api/jugadores/' + jugador.id,
   				data: jugador
   			});
   		},

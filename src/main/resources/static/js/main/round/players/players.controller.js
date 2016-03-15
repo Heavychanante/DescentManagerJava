@@ -182,7 +182,8 @@ angular.module('descentManagerApp')
 
   	// Se actualizan los campos del jugador
   	$scope.updateJugador = function (jugador) {
-      Alert.showLoader();
+  		Alert.showLoader();
+  		console.log(jugador);
   		Player.update(jugador).
   			then(function(response) {
   				console.log('Jugador ' + jugador.alias + ' actualizado: ' + response.status);
