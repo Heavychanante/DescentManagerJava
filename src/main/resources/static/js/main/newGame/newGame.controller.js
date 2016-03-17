@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('descentManagerApp')
-  .controller('NewGameCtrl', function ($scope, $uibModal, Alert, Game, Player, $rootScope, $state, $q) {
+  .controller('NewGameCtrl', function ($scope, $uibModal, Alert, Game, Player, Skill, $rootScope, $state, $q, $http) {
 
     $scope.players = [];
 
@@ -65,9 +65,41 @@ angular.module('descentManagerApp')
         		jugadoresPromises.push(Player.create(jugador));
         	}
 
-        	// Cuando se crean todos los jugadores se devuelve el control
+        	// Cuando se crean todos los jugadores se les asignan las habilidades
         	$q.all(jugadoresPromises)
         		.then(function(response) {
+
+        			var jugadores = response;
+        			for (var i=0; i < jugadores.length; i++) {
+        				// Se recupera la clase a la que pertenece el jugador
+        				(function(i) {
+	        				$http.get(jugadores[i].data._links.clase.href)
+	        					.then(function(response) {
+	        						// Se recuperan las habilidades con coste de experiencia 0
+	        						Skill.findByClaseAndCosteExperiencia(response.data.id, 0)
+	        							.then(function(response) {
+	        								// Se asignan las habilidades al jugador
+	        								var habilidades = response.data._embedded.habilidades;
+	        								for (var j=0; j < habilidades.length; j++) {
+	        									Player.setSkill(jugadores[i].data.id, habilidades[j].id)
+	        										.then(function(response) {
+
+	        											// Por último se crea la aventura de la partida
+	        											
+
+	        										}, function(error) {
+	        											console.log("ERROR llamando a Player.setSkill: " + error);
+	        										});
+	        								}
+	        							}, function(error){
+	        								console.log("ERROR llamando a Skill.findByClaseAndCosteExperiencia: " + error);
+	        							});
+	        					}, function(error) {
+	        						console.log("Error obteniendo la clase: " + error);
+	        					});
+        				})(i);
+        			}
+        			
         			Alert.hideLoader();
                     Alert.showAlert('La partida se ha creado correctamente');
                     $state.go('main.games');

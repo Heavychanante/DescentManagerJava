@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('descentManagerApp')
-  .controller('LoginCtrl', ['$scope', '$state', '$http', '$rootScope', function ($scope, $state, $http, $rootScope) {
+  .controller('LoginCtrl', ['$scope', '$state', '$http', '$rootScope', '$cookieStore', function ($scope, $state, $http, $rootScope, $cookieStore) {
     $scope.alert = false;
     $scope.alertClass = '';
     $scope.alertMessage = '';
@@ -13,6 +13,7 @@ angular.module('descentManagerApp')
             // Se guarda el usuario en la sesión global y se redirige a "main"
             $rootScope.currentUser = response.data;
             $rootScope.currentUser.url = $rootScope.baseUrl + 'api/usuarios/' + response.data.id;
+            $cookieStore.put('currentUser', $rootScope.currentUser);
             $scope.alert = false;
             $scope.alertClass = '';
             $scope.alertMessage = '';

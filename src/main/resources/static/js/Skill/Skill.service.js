@@ -44,6 +44,18 @@ angular.module('descentManagerApp')
                   url: '/api/habilidades/search/findByClase/',
                   params: { claseId : claseId }
               });
+  		},
+  		// Método que obtiene el listado de habilidades que pertenecen a una determinada clase y
+  		// que tienen un determinado coste de experiencia
+  		findByClaseAndCosteExperiencia: function(claseId, costeExperiencia) {
+  			return $http({
+                  method: 'GET',
+                  url: '/api/habilidades/search/findByClaseAndCosteExperiencia/',
+                  params: {
+                	  claseId : claseId,
+                	  costeExperiencia: costeExperiencia
+                  }
+              });
   		}
   	};
   }]);

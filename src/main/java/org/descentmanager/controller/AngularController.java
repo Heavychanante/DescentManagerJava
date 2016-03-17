@@ -7,8 +7,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class AngularController {
 
-	@RequestMapping(value = "/{[path:[^\\.]*}", method = RequestMethod.GET)
+	/**
+	 * Este controlador se encarga de capturar todas las rutas manejadas por Angular
+	 * y redireccionar a la página principal para que sea el Router de Angular
+	 * el que gestione la navegación
+	 */
+	@RequestMapping(value = "/main/**", method = RequestMethod.GET)
 	public String redirect() {
-	  return "forward:/";
+		return "forward:/index.html";
 	}
 }

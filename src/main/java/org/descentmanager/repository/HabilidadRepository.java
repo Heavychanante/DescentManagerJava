@@ -18,4 +18,9 @@ public interface HabilidadRepository extends PagingAndSortingRepository<Habilida
 	 */
 	@RestResource(path = "findByClase", rel = "findByClase")
 	Page<Habilidad> findByClaseId(@Param("claseId") Integer claseId, Pageable pageable);
+
+	@RestResource(path = "findByClaseAndCosteExperiencia", rel = "findByClaseAndCosteExperiencia")
+	Page<Habilidad> findByClaseIdAndCosteExperiencia(@Param("claseId") Integer claseId,
+													 @Param("costeExperiencia") Integer costeExperiencia,
+													 Pageable pageable);
 }
