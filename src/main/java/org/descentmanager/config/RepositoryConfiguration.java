@@ -7,7 +7,7 @@ import org.descentmanager.model.Jugador;
 import org.descentmanager.model.Objeto;
 import org.descentmanager.model.Partida;
 import org.descentmanager.model.Personaje;
-import org.descentmanager.model.pk.converter.CampaniaPartidaPkConverter;
+import org.descentmanager.model.pk.converter.AventuraPartidaPkConverter;
 import org.descentmanager.model.pk.converter.DadoHabilidadPkConverter;
 import org.descentmanager.model.pk.converter.DadoObjetoPkConverter;
 import org.descentmanager.model.pk.converter.JugadorHabilidadPkConverter;
@@ -29,7 +29,7 @@ public class RepositoryConfiguration extends RepositoryRestConfigurerAdapter {
 
 	@Override
 	public void configureConversionService(ConfigurableConversionService conversionService) {
-		conversionService.addConverter(new CampaniaPartidaPkConverter());
+		conversionService.addConverter(new AventuraPartidaPkConverter());
 		conversionService.addConverter(new DadoHabilidadPkConverter());
 		conversionService.addConverter(new DadoObjetoPkConverter());
 		conversionService.addConverter(new JugadorHabilidadPkConverter());

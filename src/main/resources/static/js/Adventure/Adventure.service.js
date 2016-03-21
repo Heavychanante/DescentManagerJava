@@ -7,19 +7,19 @@ angular.module('descentManagerApp')
       list: function () {
         return $http({
                   method: 'GET',
-                  url: '/api/adventures/'
+                  url: '/api/aventuras/'
               });
       },
       getGameAdventures: function (gameId) {
         return $http({
                   method: 'GET',
-                  url: '/api/adventures/game/' + gameId
+                  url: '/api/aventuras/game/' + gameId
               });
       },
       updateAdventures: function (gameId, adventure) {
         return $http({
                   method: 'POST',
-                  url: '/api/adventures/game/' + gameId,
+                  url: '/api/aventuras/game/' + gameId,
                   data: adventure
               });
       }

@@ -1,6 +1,7 @@
 package org.descentmanager.model;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -34,6 +36,9 @@ public class Arquetipo {
 	@ManyToOne
 	@JoinColumn(name = "fichero_id")
 	private Fichero fichero;
+
+	@OneToMany(mappedBy = "arquetipo")
+	private Set<Clase> clases;
 
 	@Column(name = "creacion")
 	private Timestamp creacion;
@@ -92,4 +97,13 @@ public class Arquetipo {
 	public void setModificacion(Timestamp modificacion) {
 		this.modificacion = modificacion;
 	}
+
+	public Set<Clase> getClases() {
+		return clases;
+	}
+
+	public void setClases(Set<Clase> clases) {
+		this.clases = clases;
+	}
+
 }

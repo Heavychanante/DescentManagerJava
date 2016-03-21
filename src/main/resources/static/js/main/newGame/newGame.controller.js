@@ -84,7 +84,7 @@ angular.module('descentManagerApp')
 	        									Player.setSkill(jugadores[i].data.id, habilidades[j].id)
 	        										.then(function(response) {
 
-	        											// Por último se crea la aventura de la partida
+	        											// Por último se crea la aventura inicial de la partida
 	        											
 
 	        										}, function(error) {

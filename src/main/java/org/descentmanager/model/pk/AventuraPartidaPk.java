@@ -6,39 +6,39 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
- * Clase que representa la clave primaria compuesta de la tabla Campa�aPartida
+ * Clase que representa la clave primaria compuesta de la tabla AventuraPartida
  * 
  * @author Hugo
  * 
  */
 @Embeddable
-public class CampaniaPartidaPk implements Serializable {
+public class AventuraPartidaPk implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	/** Identificador de la campa�a */
-	@Column(name = "campania_id")
-	private Integer campaniaId;
+	/** Identificador de la aventura */
+	@Column(name = "aventura_id")
+	private Integer aventuraId;
 
 	/** Identificador de la partida */
 	@Column(name = "partida_id")
 	private Integer partidaId;
 
-	public CampaniaPartidaPk() {
+	public AventuraPartidaPk() {
 		super();
 	}
 
-	public CampaniaPartidaPk(Integer campaniaId, Integer partidaId) {
-		this.campaniaId = campaniaId;
+	public AventuraPartidaPk(Integer aventuraId, Integer partidaId) {
+		this.aventuraId = aventuraId;
 		this.partidaId = partidaId;
 	}
 
-	public Integer getCampaniaId() {
-		return campaniaId;
+	public Integer getAventuraId() {
+		return aventuraId;
 	}
 
-	public void setCampaniaId(Integer campaniaId) {
-		this.campaniaId = campaniaId;
+	public void setAventuraId(Integer aventuraId) {
+		this.aventuraId = aventuraId;
 	}
 
 	public Integer getPartidaId() {
@@ -51,6 +51,6 @@ public class CampaniaPartidaPk implements Serializable {
 
 	@Override
 	public String toString() {
-		return campaniaId.toString() + "-" + partidaId.toString();
+		return aventuraId.toString() + "-" + partidaId.toString();
 	}
 }

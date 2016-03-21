@@ -22,12 +22,12 @@ angular.module('descentManagerApp', [
 
     // Configuración de los diálogos de confirmación
     dialogsProvider.useBackdrop('static');
-		dialogsProvider.useEscClose(false);
-		dialogsProvider.useCopy(false);
-		dialogsProvider.setSize('sm');
+	dialogsProvider.useEscClose(false);
+	dialogsProvider.useCopy(false);
+	dialogsProvider.setSize('sm');
 
     // Traducciones
-		$translateProvider.translations('es', es);
+	$translateProvider.translations('es', es);
     $translateProvider.translations('en', en);
 
     // Sanitize
@@ -43,10 +43,10 @@ angular.module('descentManagerApp', [
     $rootScope.alertMessage = '';
     $rootScope.showAlertMessage = false;
     $rootScope.showLoader = false;
-    $rootScope.baseUrl =  $location.absUrl();
+    $rootScope.baseUrl = $location.absUrl();
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-      if (toState.url !== '/register' && toState.url !== '/login') {
+      if (toState.name !== 'register' && toState.name !== 'login') {
     	  var currentUser = $cookieStore.get('currentUser');
     	  if (currentUser) {
     		  $rootScope.currentUser = currentUser;
@@ -64,7 +64,7 @@ angular.module('descentManagerApp', [
 //            if (response.data !== '0') {
 //              $rootScope.currentUser = response.data;
 //            } else {
-//              // Ususario no autenticado
+//              // Usuario no autenticado
 //              $rootScope.loginErrorMessage = 'Debes hacer login';
 //              event.preventDefault();
 //              $state.go('login');
