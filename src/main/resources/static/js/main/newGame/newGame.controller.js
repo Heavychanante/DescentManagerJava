@@ -39,9 +39,12 @@ angular.module('descentManagerApp')
 
     // Método que guarda la partida
     $scope.save = function() {
+    	var partidaId;
+
       Alert.showLoader();
       Game.createGame($scope.newGame)
         .then(function(response) {
+        	partidaId = response.data.id;
 
         	// Una vez creada la partida, se asignan los jugadores
         	var jugadoresPromises = [];
@@ -83,10 +86,7 @@ angular.module('descentManagerApp')
 	        								for (var j=0; j < habilidades.length; j++) {
 	        									Player.setSkill(jugadores[i].data.id, habilidades[j].id)
 	        										.then(function(response) {
-
-	        											// Por último se crea la aventura inicial de la partida
-	        											
-
+	        											// Ok
 	        										}, function(error) {
 	        											console.log("ERROR llamando a Player.setSkill: " + error);
 	        										});
@@ -107,7 +107,22 @@ angular.module('descentManagerApp')
         			Alert.hideLoader();
                     Alert.showAlert('Error inesperado creando la partida', 'error');
         		});
-            
+
+        	// Por último se crea la aventura inicial de la partida
+        	var aventuraPartida = {
+        			id : {
+        				aventuraId : 1,
+        				partidaId : partidaId
+        			},
+        			activa : true
+        	}
+			Game.setAdventure(aventuraPartida)
+				.then(function(response) {
+					// Ok
+				}, function(error) {
+					console.log("ERROR llamando a Game.setAdventure: " + error);
+				});
+
           }, function(error) {
             Alert.hideLoader();
             Alert.showAlert('Error inesperado creando la partida', 'error');

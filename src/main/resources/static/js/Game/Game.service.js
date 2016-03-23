@@ -25,6 +25,21 @@ angular.module('descentManagerApp')
           method: 'DELETE',
           url: partidaUrl
         });
+      },
+      // Método que asigna una aventura a una partida
+      setAdventure: function(aventuraPartida) {
+    	  return $http({
+    		 method: 'POST',
+    		 url: '/api/aventuraPartida/',
+    		 data: aventuraPartida
+    	  });
+      },
+      // Método que borra una aventura de una partida
+      deleteAdventure: function(url) {
+    	  return $http({
+    		 method: 'DELETE',
+    		 url: url
+    	  });
       }
     };
   });

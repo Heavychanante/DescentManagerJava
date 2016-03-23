@@ -13,7 +13,10 @@ angular.module('descentManagerApp')
       getGameAdventures: function (gameId) {
         return $http({
                   method: 'GET',
-                  url: '/api/aventuras/game/' + gameId
+                  url: '/api/aventuraPartida/search/findByPartida/',
+                  params : {
+                	  partidaId : gameId
+                  }
               });
       },
       updateAdventures: function (gameId, adventure) {
