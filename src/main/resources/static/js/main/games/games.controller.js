@@ -14,112 +14,101 @@ angular.module('descentManagerApp')
 
     // Borra una partida
     $scope.deleteGame = function(partida) {
+
       dialogs.confirm('Borrar partida', '¿Deseas borrar la partida "' + partida.nombre + '"?').
         result.then(function(){
           Alert.showLoader();
-          console.log("PARTIDA A BORRAR = " + partida.id);
-          // Primero se borran los jugadores de la partida
-          Player.getGamePlayers(partida.id)
+
+          deleteAdventures(partida.id) // Se borran las aventuras de la partida
           	.then(function(response) {
-          		var habilidadesObjetosPromise = [];
-          		var jugadoresPromise = [];
-          		var jugadores = response.data._embedded.jugadores;
-
-          		for (var i=0; i < jugadores.length; i++) {
-          			// Se borran las habilidades de cada jugador
-          			Skill.getHabilidadesByJugador(jugadores[i].id)
-          				.then(function(response) {
-          					var habilidades = response.data._embedded.jugadorHabilidad;
-
-          					for (var j=0; j < habilidades.length; j++) {
-          						habilidadesObjetosPromise.push($http.delete(habilidades[j]._links.self.href));
-          					}
-          				}, function(error) {
-          					var message = 'Error borrando la partida ' + partida.id + ': ' + error.data + ' (' + error.status + ')';
-	          	            Alert.hideLoader();
-	          	            Alert.showAlert(message, error);
-          				});
-
-          			// Se borran los objetos de cada jugador
-          			Item.getObjetosByJugador(jugadores[i].id)
-          				.then(function(response) {
-          					var objetos = response.data._embedded.jugadorObjeto;
-
-          					for (var j=0; j < objetos.length; j++) {
-          						habilidadesObjetosPromise.push($http.delete(objetos[j]._links.self.href));
-          					}
-          				}, function(error) {
-          					var message = 'Error borrando la partida ' + partida.id + ': ' + error.data + ' (' + error.status + ')';
-	          	            Alert.hideLoader();
-	          	            Alert.showAlert(message, error);
-          				});
-          		}
-
-          		// Una vez borradoslos objetos y las habilidades se borran los jugadores
-          		$q.all(habilidadesObjetosPromise)
-          			.then(function(response) {
-          				for (var i=0; i < jugadores.length; i++) {
-                  			jugadoresPromise.push(Player.deletePlayer(jugadores[i]._links.self.href));
-                  		}
-          			}, function(error) {
-          				var message = 'Error borrando la partida ' + partida.id + ': ' + error.data + ' (' + error.status + ')';
-          	            Alert.hideLoader();
-          	            Alert.showAlert(message, error);
-          			})
-          		
-          		// Cuando se han borrado todos los jugadores se borran las aventuras de la partida
-          		$q.all(jugadoresPromise)
-	          		.then(function(response) {
-
-	          			// Primero se recuperan las aventuras de la partida
-	          			Adventure.getGameAdventures(partida.id)
-	          				.then(function(response) {
-
-	          					// Se borran todas las aventuras de la partida
-	          					var aventuras = response.data._embedded.aventuraPartida;
-	          					var aventurasPromise = [];
-	          					for (var i=0; i < aventuras.length; i++) {
-	          						aventurasPromise.push(Game.deleteAdventure(aventuras[i]._links.self.href));
-	          					}
-
-	          					// Finalmente se borra la partida
-	          					$q.all(aventurasPromise)
-	          						.then(function(response) {
-	          							Game.deleteGame(partida._links.self.href).
-						                    then(function(response) {
-						                      $scope.init();
-						                      Alert.hideLoader();
-						                      Alert.showAlert('La partida se ha eliminado correctamente');
-						                    }, function(error) {
-						                      var message = 'Error borrando la partida ' + partida.id + ': ' + error.data + ' (' + error.status + ')';
-						                      Alert.hideLoader();
-						                      Alert.showAlert(message, error);
-						                    });
-	          						}, function(error) {
-	          							var message = 'Error borrando la partida ' + partida.id + ': ' + error.data + ' (' + error.status + ')';
-	    	          	                Alert.hideLoader();
-	    	          	                Alert.showAlert(message, error);
-	          						})
-	          					
-	          				}, function(error) {
-	          					var message = 'Error borrando la partida ' + partida.id + ': ' + error.data + ' (' + error.status + ')';
-	          	                Alert.hideLoader();
-	          	                Alert.showAlert(message, error);
-	          				});
-
-	  				}, function(error) {
-	  					var message = 'Error borrando la partida ' + partida.id + ': ' + error.data + ' (' + error.status + ')';
-	  	                Alert.hideLoader();
-	  	                Alert.showAlert(message, error);
-	  				});
-          		
-          	}, function(error) {
+          		return deleteGamePlayers(partida.id); // Se borran los jugadores de la partida
+          	})
+          	.then(function(response) {
+          		return deleteGame(partida); // Se borra la partida
+          	})
+          	.then(function(response) {
+		    	$scope.init();
+				Alert.hideLoader();
+				Alert.showAlert('La partida se ha eliminado correctamente');
+          	}, function(error){
           		var message = 'Error borrando la partida ' + partida.id + ': ' + error.data + ' (' + error.status + ')';
-                Alert.hideLoader();
-                Alert.showAlert(message, error);
+	            Alert.hideLoader();
+	            Alert.showAlert(message, error);
           	});
 
         });
+    };
+
+    // MÉTODOS PARA IMPLEMENTAR EL BORRADO
+
+    // Borra las aventuras de la partida
+    var deleteAdventures = function(partidaId) {
+    	return Adventure.getGameAdventures(partidaId)
+		      	.then(function(response) {
+		      		var aventuras = response.data._embedded.aventuraPartida;
+					var aventurasPromise = [];
+
+					for (var i=0; i < aventuras.length; i++) {
+						aventurasPromise.push(Game.deleteAdventure(aventuras[i]._links.self.href));
+					}
+					return $q.all(aventurasPromise);
+		      	});
+    };
+
+    // Borra las habilidades de un jugador
+    var deleteSkills = function(jugadorId) {
+    	return Skill.getHabilidadesByJugador(jugadorId)
+				.then(function(response) {
+					var habilidadesPromise = [];
+					var habilidades = response.data._embedded.jugadorHabilidad;
+					
+					for (var i=0; i < habilidades.length; i++) {
+						habilidadesPromise.push(Player.deleteSkillUrl(habilidades[i]._links.self.href));
+					}
+			    	return $q.all(habilidadesPromise);
+				});
+    };
+
+    // Borra los objetos de un jugador
+    var deleteItems = function(jugadorId) {
+    	return Item.getObjetosByJugador(jugadorId)
+				.then(function(response) {
+					var objetosPromise = [];
+			    	var objetos = response.data._embedded.jugadorObjeto;
+	
+			    	for (var i=0; i < objetos.length; i++) {
+						objetosPromise.push(Player.deleteItemUrl(objetos[i]._links.self.href));
+					}
+			    	return $q.all(objetosPromise);
+				});
+    };
+
+    // Borra un jugador
+    var deletePlayer = function(jugador) {
+    	return $q.all([deleteItems(jugador.id), // Se borran los objetos del jugador
+    	               deleteSkills(jugador.id)]) // Se borran las habilidades del jugador
+	    	        .then(function(response) {
+	    	        	return Player.deletePlayer(jugador._links.self.href); // Por último se borra el jugador
+	    	        });
+    };
+
+    // Borra todos los jugadores de una partida
+    var deleteGamePlayers = function(gameId) {
+    	return Player.getGamePlayers(gameId)
+	    		.then(function(response) {
+	    			var playerPromises = [];
+	    			var jugadores = response.data._embedded.jugadores;
+	
+	    			for (var i=0; i < jugadores.length; i++) {
+	    				playerPromises.push(deletePlayer(jugadores[i]));
+	    			}
+	    			return $q.all(playerPromises);
+	    		});
+    };
+
+    // Borra la partida
+    var deleteGame = function(game) {
+    	return Game.deleteGame(game._links.self.href);
     };
 
     $scope.init();
