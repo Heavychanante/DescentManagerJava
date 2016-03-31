@@ -70,42 +70,30 @@ angular.module('descentManagerApp')
 
         	// Cuando se crean todos los jugadores se les asignan las habilidades
         	$q.all(jugadoresPromises)
-        		.then(function(response) {
+        		.then(function(jugadores) {
+        			var promises = [];
 
-        			var jugadores = response;
         			for (var i=0; i < jugadores.length; i++) {
-        				// Se recupera la clase a la que pertenece el jugador
-        				(function(i) {
-	        				$http.get(jugadores[i].data._links.clase.href)
-	        					.then(function(response) {
-	        						// Se recuperan las habilidades con coste de experiencia 0
-	        						Skill.findByClaseAndCosteExperiencia(response.data.id, 0)
-	        							.then(function(response) {
-	        								// Se asignan las habilidades al jugador
-	        								var habilidades = response.data._embedded.habilidades;
-	        								for (var j=0; j < habilidades.length; j++) {
-	        									Player.setSkill(jugadores[i].data.id, habilidades[j].id)
-	        										.then(function(response) {
-	        											// Ok
-	        										}, function(error) {
-	        											console.log("ERROR llamando a Player.setSkill: " + error);
-	        										});
-	        								}
-	        							}, function(error){
-	        								console.log("ERROR llamando a Skill.findByClaseAndCosteExperiencia: " + error);
-	        							});
-	        					}, function(error) {
-	        						console.log("Error obteniendo la clase: " + error);
-	        					});
-        				})(i);
+        				var jugador = jugadores[i].data;
+        				promises.push(findClase(jugador.id, jugador._links.clase.href) // Se busca la clase de cada jugador
+			        					.then(function(jugadorClase) {
+			        						return findByClaseAndCosteExperiencia0(jugadorClase); // Se recuperan las habilidades de coste 0 de la clase
+			        					})
+			        					.then(function(jugadorHabilidades) {
+			        						return setHabilidadesToJugador(jugadorHabilidades.jugadorId, jugadorHabilidades.habilidades); // Se asignan las habilidades al jugador
+			        					}));
         			}
-        			
-        			Alert.hideLoader();
-                    Alert.showAlert('La partida se ha creado correctamente');
-                    $state.go('main.games');
-        		}, function(error) {
-        			Alert.hideLoader();
-                    Alert.showAlert('Error inesperado creando la partida', 'error');
+
+        			// Cuando se crean todos los jugadores se confirma el guardado de partida
+        			$q.all(promises)
+        				.then(function(response) {
+        					Alert.hideLoader();
+		                    Alert.showAlert('La partida se ha creado correctamente');
+		                    $state.go('main.games');
+        				}, function(error) {
+        					Alert.hideLoader();
+                            Alert.showAlert('Error inesperado creando la partida', 'error');
+        				});
         		});
 
         	// Por último se crea la aventura inicial de la partida
@@ -124,9 +112,35 @@ angular.module('descentManagerApp')
 				});
 
           }, function(error) {
-            Alert.hideLoader();
-            Alert.showAlert('Error inesperado creando la partida', 'error');
+        	  Alert.hideLoader();
+        	  Alert.showAlert('Error inesperado creando la partida', 'error');
           });
     };
 
+    // MÉTODOS AUXILIARES PARA CREAR LA PARTIDA
+
+    // Método que recupera la información de una clase a partir de su URL
+    var findClase = function(jugadorId, urlClase) {
+    	return $http.get(urlClase)
+				.then(function(clase) {
+					return {jugadorId: jugadorId, clase: clase.data};
+				});
+    };
+
+    // Método que recupera las habilidades de coste cero de una clase
+    var findByClaseAndCosteExperiencia0 = function(jugadorClase) {
+    	return Skill.findByClaseAndCosteExperiencia(jugadorClase.clase.id, 0)
+				.then(function(response) {
+					return {jugadorId: jugadorClase.jugadorId, habilidades: response.data._embedded.habilidades};
+				});
+    };
+
+    // Método que asigna un listado de habilidades a un jugador
+    var setHabilidadesToJugador = function(jugadorId, habilidades) {
+    	var promises = []
+    	for (var j=0; j < habilidades.length; j++) {
+			promises.push(Player.setSkill(jugadorId, habilidades[j].id));
+    	}
+    	return $q.all(promises);
+    };
   });
